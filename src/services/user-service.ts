@@ -4,19 +4,23 @@ import { db } from "../libs/prisma";
 export const createUser = async (
   email: string,
   password: string,
-  name: string
+  name: string,
+  jobTitle: string,
+  company: string
 ) => {
   return await db.user.create({
     data: {
       name,
       email,
       password: encryptPassword(password, 10),
+      jobTitle,
+      company,
     },
   });
 };
 
 export const getUserByEmail = async (email: string) => {
-  return await db.user.findUnique({
+  return await db.user.findFirst({
     where: {
       email,
     },

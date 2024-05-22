@@ -5,19 +5,21 @@ import { createUser, getUserByEmail } from "../services/user-service";
 // register route - Register a new user
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, job, company } = req.body;
 
-  if (email && password) {
-    const hasUser = await getUserByEmail(email);
-    if (!hasUser) {
-      const newUser = await createUser(email, password, name);
+  const hasUser = await getUserByEmail(email);
+
+  if (!hasUser) {
+    try {
+      const newUser = await createUser(email, password, name, job, company);
       const token = generateJWT({ id: newUser.id, email: newUser.email });
 
       return res
         .status(201)
         .json({ id: newUser.id, email: newUser.email, token });
+    } catch (e) {
+      return res.status(500).json({ message: "Internal error" });
     }
-    return res.json({ error: "Email already taken." });
   }
-  return res.json({ error: "Fill required fields." });
+  return res.status(200).json({ message: "Email already taken." });
 };
