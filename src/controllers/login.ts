@@ -13,12 +13,14 @@ export const login = async (req: Request, res: Response) => {
     if (user && (await decryptPassword(password, user.password))) {
       const token = generateJWT({ id: user.id, email: user.email });
 
-      return res.json({
+      const data = {
         status: true,
         token,
-      });
+      };
+
+      return res.status(200).send(data);
     }
-    return res.json({ message: "Invalid credentials.", status: false });
+    return res.status(500).send({ message: "Invalid credentials." });
   }
   return res.json({ message: "Fill required fields.", status: false });
 };
