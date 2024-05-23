@@ -5,13 +5,19 @@ import { createUser, getUserByEmail } from "../services/user-service";
 // register route - Register a new user
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password, name, job, company } = req.body;
+  const { email, password, name, jobTitle, company } = req.body;
 
   const hasUser = await getUserByEmail(email);
 
   if (!hasUser) {
     try {
-      const newUser = await createUser(email, password, name, job, company);
+      const newUser = await createUser(
+        email,
+        password,
+        name,
+        jobTitle,
+        company
+      );
       const token = generateJWT({ id: newUser.id, email: newUser.email });
 
       return res
