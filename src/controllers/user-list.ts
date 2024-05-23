@@ -5,7 +5,7 @@ export const list = async (req: Request, res: Response) => {
   let users = await getAllUsers();
 
   if (users) {
-    return res.json({
+    return res.status(200).json({
       users: users.map((user) => {
         return {
           name: user.name,
