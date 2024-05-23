@@ -21,5 +21,5 @@ export const register = async (req: Request, res: Response) => {
       return res.status(500).json({ message: "Internal error" });
     }
   }
-  return res.status(200).json({ message: "Email already taken." });
+  return res.status(500).json({ message: "Email already taken." });
 };
